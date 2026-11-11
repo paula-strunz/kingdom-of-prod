@@ -1,0 +1,9 @@
+{
+  "name": "kingdom-of-prod-evals",
+  "private": true,
+  "type": "module",
+  "description": "Judge eval. Kept apart from the app so its dependencies never ship to Vercel.",
+  "dependencies": {
+    "@arizeai/phoenix-client": "^8.0.0"
+  }
+}

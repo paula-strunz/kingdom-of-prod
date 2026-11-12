@@ -1,4 +1,4 @@
-# Kingdom of Prod: PRD (draft v2, 11 Nov 2026)
+# Kingdom of Prod: PRD (draft v3, 11 Nov 2026)
 
 ## What it is
 A 10-minute spooky autumn story game. You're the new keeper of Hollowmere, a foggy village at harvest time. Five strange problems appear. Each one is a real PM dilemma in disguise.
@@ -17,9 +17,9 @@ It's a game first, and every quest teaches one PM lesson. You make a call, see w
 | 5 | **The Counting Fog** | The fog-counter says visitors doubled, but nobody buys pumpkins. | Watch the metric that means value, not the one that looks good. |
 
 ## How a quest plays
-1. One illustrated scene and 2 or 3 lines of story.
+1. You walk to a new place on the village map. An animated scene plays, with 2 or 3 lines of story.
 2. Three choices, or whisper your own answer.
-3. The village reacts: lanterns glow or go dark, and your reputation goes up or down.
+3. The village reacts: the scene shows what happened, lanterns glow or go dark, and your reputation goes up or down.
 4. One line of lore.
 
 Your reputation picks one of 3 endings: the village thrives, it muddles on, or the fog takes it.
@@ -31,6 +31,8 @@ Your reputation picks one of 3 endings: the village thrives, it muddles on, or t
 
 ## Look and feel
 A beautiful fall atmosphere, a little spooky and mysterious: fog, amber lantern light, falling leaves, deep plum and pumpkin colors, a hand-drawn storybook style. It's calm, never gory. Big readable type, one choice per tap, soft ambient sound you can mute.
+
+It should feel like a small video game, with a light 1990s adventure-game look. You see your character, the keeper, walk through each quest and face the real situation. Each quest is in a different place, so you feel you are moving through the village. You hear what you see: if there is a raven, it caws.
 
 ## Who builds what
 - **Claude Opus** designs the look: palette, scenes, type and motion.

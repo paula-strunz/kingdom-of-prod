@@ -1,0 +1,71 @@
+/*
+ * Kingdom of Prod design tokens.
+ * A dark storybook at dusk: plum night, parchment ink, amber lantern light, pumpkin accents.
+ * Text pairs checked for WCAG AA (ratios in the design notes):
+ *   parchment on plum 13.7, mist on plum 9.6, amber on plum 10.6, night on pumpkin 7.5.
+ */
+:root {
+  /* Palette: names are shared with the UI, keep them stable. */
+  --color-night: #150c1e; /* page background, deepest sky */
+  --color-plum: #2a1839; /* storybook page */
+  --color-plum-raised: #332046; /* raised panels on the page */
+  --color-plum-light: #4b3263; /* hills, rules, quiet borders */
+  --color-parchment: #f6ead4; /* body text */
+  --color-mist: #cfc2d9; /* secondary text, fog */
+  --color-pumpkin: #ec8a35; /* primary action, pumpkins */
+  --color-pumpkin-deep: #b9581f; /* pumpkin shadow side */
+  --color-amber: #ffc76b; /* lantern light, titles, focus */
+  --color-ember: #a06a32; /* control borders, wood */
+  --color-ink: #0d0614; /* hand-drawn outlines */
+  --color-dusk: #3c2350; /* sky wash near the horizon */
+  --color-stone: #6b5a78; /* stone, slate, rope */
+  --color-leaf-red: #b4452c;
+  --color-leaf-gold: #d99a3a;
+  --color-moss: #4f5a3a;
+
+  /* One color per place. It washes the sky of the scene and the page behind the game. */
+  --place-gate: #a8433a; /* the village gate: the last red of dusk */
+  --place-well: #1f6f6a; /* the old well: marsh green */
+  --place-workshop: #7a4a1a; /* the workshop: candle-warm wood */
+  --place-river: #24508f; /* the keeper's window: cold moonlit blue */
+  --place-market: #7d7a86; /* the market: grey fog */
+
+  /* The ground under each kind of scene: the page continues it to the bottom of the screen. */
+  --ground-default: #2c1b3b;
+  --ground-workshop: var(--color-ink);
+  --ground-map: #2f1d40;
+
+  /* Type */
+  /* --font-fell and --font-literata come from next/font in app/layout.tsx. */
+  --font-display: var(--font-fell, "Iowan Old Style"), "Palatino Linotype", Georgia, serif;
+  --font-story: var(--font-literata, Georgia), "Iowan Old Style", "Palatino Linotype", serif;
+  --font-pixel: var(--font-silkscreen, "Courier New"), monospace; /* short labels only */
+  --font-size-body: 1.1875rem; /* 19px, never below 18px */
+  --font-size-small: 1.125rem; /* 18px, notes and the source line */
+  --font-size-kicker: 1rem; /* 16px, spaced capitals only, never running text */
+  --font-size-lore: clamp(1.3125rem, 1.2rem + 0.6vw, 1.5rem);
+  --font-size-title: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  --font-size-hero: clamp(2.75rem, 2rem + 4vw, 4.5rem);
+  --line-height: 1.6;
+  --line-height-tight: 1.15;
+  --measure: 36rem;
+
+  /* Space */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --radius: 0.75rem;
+  --radius-page: 1.25rem;
+  --tap-min: 2.75rem; /* 44px */
+
+  /* Motion: slow and decorative. Reduced motion keeps only fades. */
+  --motion-fast: 180ms;
+  --motion-slow: 600ms;
+  --motion-beat: 700ms; /* each new beat fades in */
+  --motion-flicker: 3.2s; /* lit lantern flame */
+  --motion-fog: 70s; /* one fog drift cycle */
+  --motion-leaf: 18s; /* one leaf fall */
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}

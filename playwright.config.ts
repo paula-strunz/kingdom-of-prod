@@ -5,6 +5,9 @@ const PORT = 3100;
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
+  // A full game is 25 beats, and each beat waits for its entrance animation: about 27s on a
+  // laptop, and slower on a CI machine. The default of 30s is too tight.
+  timeout: 90_000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: "list",

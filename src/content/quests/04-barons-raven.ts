@@ -3,9 +3,13 @@ import type { Quest } from "../schema";
 export const baronsRaven: Quest = {
   id: "barons-raven",
   title: "The Baron's Raven",
+  place: {
+    name: "The keeper's window",
+    road: "You climb to your own room above the river. Something black is circling over the bridge.",
+  },
   scene: {
     id: "barons-raven",
-    alt: "A raven on a windowsill holding a sealed letter. Beyond it, a sagging wooden bridge over a misty river.",
+    alt: "The keeper stands at their window. A raven lands on the sill holding a sealed letter. Beyond it, a sagging wooden bridge over a misty river.",
   },
   story: [
     "A raven lands on your sill with a sealed note from the Baron.",

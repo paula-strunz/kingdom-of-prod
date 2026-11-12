@@ -44,6 +44,8 @@ export function Atmosphere() {
   return (
     <div className={styles.atmosphere} aria-hidden="true">
       <div className={styles.sky} />
+      <div className={styles.moon} />
+      <div className={styles.tint} data-testid="place-tint" />
       <svg
         className={styles.treeline}
         viewBox="0 0 1200 160"

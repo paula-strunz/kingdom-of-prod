@@ -4,7 +4,9 @@
  * soft ink outlines with round joins, low fog and a few leaves. No gradients or
  * ids, so a scene can appear more than once on a page without clashes.
  */
-import type { SVGProps } from "react";
+import type { CSSProperties, ReactNode, SVGProps } from "react";
+import type { Tier } from "../../engine/types";
+import styles from "./scenes.module.css";
 
 export const VIEWBOX = "0 0 320 180";
 export const WIDTH = 320;
@@ -21,12 +23,23 @@ export const ink = {
 export const thinInk = { ...ink, strokeWidth: 1 } as const;
 
 /** Night sky with a dusky band near the horizon and a few stars. */
-export function Sky({ horizon = 100, stars = true }: { horizon?: number; stars?: boolean }) {
+export function Sky({
+  horizon = 100,
+  stars = true,
+  tint,
+}: {
+  horizon?: number;
+  stars?: boolean;
+  /** A color for the place, washed over the lower sky. */
+  tint?: string;
+}) {
   return (
     <g>
       <rect width={WIDTH} height={HEIGHT} fill="var(--color-night)" />
       <rect y={horizon - 50} width={WIDTH} height={HEIGHT} fill="var(--color-plum)" opacity="0.7" />
       <rect y={horizon - 20} width={WIDTH} height={HEIGHT} fill="var(--color-dusk)" opacity="0.8" />
+      {tint && <rect y={horizon - 44} width={WIDTH} height={HEIGHT} fill={tint} opacity="0.3" />}
+      {tint && <rect y={horizon - 16} width={WIDTH} height={HEIGHT} fill={tint} opacity="0.45" />}
       {stars && (
         <g fill="var(--color-parchment)">
           <circle cx="24" cy="18" r="0.9" opacity="0.7" />
@@ -108,45 +121,6 @@ export function Leaf({
     <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`}>
       <path d="M0 -5 C4 -3 5 1 0 5 C-5 1 -4 -3 0 -5 Z" fill={color} {...thinInk} strokeWidth={0.6} />
       <path d="M0 -4 V6" {...thinInk} strokeWidth={0.5} fill="none" />
-    </g>
-  );
-}
-
-/** A villager: hooded cloak, round head. `reach` raises an arm toward a point (dx, dy from the shoulder). */
-export function Villager({
-  x,
-  y,
-  s = 1,
-  cloak = "var(--color-plum-light)",
-  reach,
-  hat = false,
-  opacity = 1,
-}: {
-  x: number;
-  y: number;
-  s?: number;
-  cloak?: string;
-  reach?: [number, number];
-  hat?: boolean;
-  opacity?: number;
-}) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${s})`} opacity={opacity}>
-      {reach && (
-        <path d={`M3 -24 Q${reach[0] * 0.5 + 4} ${reach[1] * 0.6 - 26} ${reach[0]} ${reach[1] - 24}`} fill="none" {...ink} strokeWidth={3.2} stroke={cloak} />
-      )}
-      {reach && (
-        <path d={`M3 -24 Q${reach[0] * 0.5 + 4} ${reach[1] * 0.6 - 26} ${reach[0]} ${reach[1] - 24}`} fill="none" {...thinInk} strokeWidth={0.8} />
-      )}
-      <path d="M-9 0 C-9 -12 -7 -22 0 -26 C7 -22 9 -12 9 0 Z" fill={cloak} {...ink} />
-      <circle cx="0" cy="-30" r="5.5" fill="#d9c3a5" {...ink} />
-      <path d="M-6.5 -29 C-6 -37 6 -37 6.5 -29 C4 -33 -4 -33 -6.5 -29 Z" fill={cloak} {...thinInk} />
-      {hat && (
-        <g>
-          <path d="M-9 -34 H9" {...ink} />
-          <rect x="-5" y="-46" width="10" height="12" fill="var(--color-ink)" />
-        </g>
-      )}
     </g>
   );
 }
@@ -242,4 +216,65 @@ export function gearPath(cx: number, cy: number, r: number, teeth: number): stri
     }
   }
   return `M${pts.join(" L")} Z`;
+}
+
+/**
+ * What a quest scene is told. With no `outcome` it draws the situation; with
+ * one, it draws what that tier led to. `thinking` shows a thought mark over
+ * the keeper while the player decides.
+ */
+export type SceneProps = { outcome?: Tier; thinking?: boolean };
+
+/** CSS custom properties for the animation classes in scenes.module.css. */
+export function vars(values: Record<string, string | number>): CSSProperties {
+  return Object.fromEntries(
+    Object.entries(values).map(([k, v]) => [`--${k}`, typeof v === "number" ? `${v}px` : v]),
+  ) as CSSProperties;
+}
+
+/** Wraps a piece so it hops on the spot, like an impatient sprite. */
+export function Bob({ delay = 0, on = true, children }: { delay?: number; on?: boolean; children: ReactNode }) {
+  return (
+    <g className={on ? styles.bob : undefined} style={vars({ d: `${delay}s` })}>
+      {children}
+    </g>
+  );
+}
+
+/** Wraps a piece so it fades in when it mounts. */
+export function Appear({ delay = 0, rise = false, children }: { delay?: number; rise?: boolean; children: ReactNode }) {
+  return (
+    <g className={rise ? styles.rise : styles.appear} style={vars({ d: `${delay}s` })}>
+      {children}
+    </g>
+  );
+}
+
+/** A lantern on a post standing on (x, y). */
+export function LanternPost({ x, y, h = 28, lit = false }: { x: number; y: number; h?: number; lit?: boolean }) {
+  return (
+    <g>
+      <path d={`M${x} ${y} V${y - h} H${x + 7}`} fill="none" {...ink} strokeWidth={2} />
+      <HangingLantern x={x + 7} y={y - h} s={0.8} lit={lit} />
+    </g>
+  );
+}
+
+/** A small hand cart with its wheels on (x, y). `load` piles pumpkins in it. */
+export function Cart({ x, y, s = 1, load = false }: { x: number; y: number; s?: number; load?: boolean }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`}>
+      {load && (
+        <>
+          <Pumpkin x={-6} y={-13} s={0.5} />
+          <Pumpkin x={5} y={-13} s={0.5} />
+          <Pumpkin x={0} y={-18} s={0.5} />
+        </>
+      )}
+      <path d="M-13 -13 H13 L11 -5 H-11 Z" fill="var(--color-ember)" {...ink} />
+      <path d="M13 -11 L21 -15" {...ink} />
+      <circle cx="-6" cy="-3" r="3.4" fill="var(--color-ink)" stroke="var(--color-stone)" strokeWidth="1.2" />
+      <circle cx="6" cy="-3" r="3.4" fill="var(--color-ink)" stroke="var(--color-stone)" strokeWidth="1.2" />
+    </g>
+  );
 }

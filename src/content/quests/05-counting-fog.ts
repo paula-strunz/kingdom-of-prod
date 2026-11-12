@@ -3,9 +3,13 @@ import type { Quest } from "../schema";
 export const countingFog: Quest = {
   id: "counting-fog",
   title: "The Counting Fog",
+  place: {
+    name: "The market square",
+    road: "The last road climbs to the market on the hill, where the fog is thickest.",
+  },
   scene: {
     id: "counting-fog",
-    alt: "A market square in thick fog, crowded with dim figures. The pumpkin stalls are piled high and untouched.",
+    alt: "The keeper stands in a market square in thick fog, crowded with dim figures. The fog-counter runs up with a tally board. The pumpkin stalls are piled high and untouched.",
   },
   story: [
     "The fog-counter runs up the hill, out of breath. \"Twice as many visitors came through the fog this week!\"",

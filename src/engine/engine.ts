@@ -37,8 +37,11 @@ export function reduce(
   switch (state.phase) {
     case "title":
       return action.type === "begin" && quests.length > 0
-        ? { ...state, phase: "scene" }
+        ? { ...state, phase: "travel" }
         : state;
+
+    case "travel":
+      return action.type === "arrive" ? { ...state, phase: "scene" } : state;
 
     case "scene":
       return action.type === "showDecision" ? { ...state, phase: "decision" } : state;
@@ -74,7 +77,7 @@ export function reduce(
       const next = state.questIndex + 1;
       return next >= quests.length
         ? { ...state, phase: "ending", whisperBlocked: false }
-        : { ...state, phase: "scene", questIndex: next, whisperBlocked: false };
+        : { ...state, phase: "travel", questIndex: next, whisperBlocked: false };
     }
 
     case "ending":

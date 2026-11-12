@@ -3,9 +3,13 @@ import type { Quest } from "../schema";
 export const lanternPleas: Quest = {
   id: "lantern-pleas",
   title: "The Lantern Pleas",
+  place: {
+    name: "The village gate",
+    road: "The road from the hills ends at an iron gate. You can hear the crowd before you see it.",
+  },
   scene: {
     id: "lantern-pleas",
-    alt: "A crowd of villagers at the gate at dusk, reaching toward two unlit lanterns. Dark lanes stretch away behind them.",
+    alt: "The keeper stands in the village gate at dusk. A crowd of villagers jumps and reaches toward two unlit lanterns. Dark lanes stretch away behind them.",
   },
   story: [
     "It is your first night as keeper. The lamplighter hands you two lanterns, the last the village has.",

@@ -20,6 +20,7 @@ function play(tiers: Tier[]): GameState {
   for (const tier of tiers) {
     state = run(
       state,
+      { type: "arrive" },
       { type: "showDecision" },
       { type: "choose", choiceId: choiceFor[tier] },
       { type: "showLore" },
@@ -30,8 +31,10 @@ function play(tiers: Tier[]): GameState {
 }
 
 describe("a quest", () => {
-  it("moves through scene, decision, reaction and lore", () => {
+  it("moves through travel, scene, decision, reaction and lore", () => {
     let state = run(initialState, { type: "begin" });
+    expect(state.phase).toBe("travel");
+    state = run(state, { type: "arrive" });
     expect(state.phase).toBe("scene");
     state = run(state, { type: "showDecision" });
     expect(state.phase).toBe("decision");
@@ -40,12 +43,16 @@ describe("a quest", () => {
     state = run(state, { type: "showLore" });
     expect(state.phase).toBe("lore");
     state = run(state, { type: "continue" });
-    expect(state).toMatchObject({ phase: "scene", questIndex: 1 });
+    expect(state).toMatchObject({ phase: "travel", questIndex: 1 });
+    expect(run(state, { type: "arrive" })).toMatchObject({ phase: "scene", questIndex: 1 });
   });
 
   it("ignores actions that do not fit the phase", () => {
     expect(run(initialState, { type: "choose", choiceId: "w" })).toEqual(initialState);
-    const scene = run(initialState, { type: "begin" });
+    const travel = run(initialState, { type: "begin" });
+    expect(run(travel, { type: "showDecision" })).toEqual(travel);
+    const scene = run(travel, { type: "arrive" });
+    expect(run(scene, { type: "arrive" })).toEqual(scene);
     expect(run(scene, { type: "continue" })).toEqual(scene);
     expect(run(scene, { type: "judged", tier: "wise" })).toEqual(scene);
     const reaction = run(scene, { type: "showDecision" }, { type: "choose", choiceId: "w" });
@@ -53,13 +60,18 @@ describe("a quest", () => {
   });
 
   it("ignores an unknown choice", () => {
-    const decision = run(initialState, { type: "begin" }, { type: "showDecision" });
+    const decision = run(initialState, { type: "begin" }, { type: "arrive" }, { type: "showDecision" });
     expect(run(decision, { type: "choose", choiceId: "nope" })).toEqual(decision);
   });
 });
 
 describe("the whisper", () => {
-  const decision = run(initialState, { type: "begin" }, { type: "showDecision" });
+  const decision = run(
+    initialState,
+    { type: "begin" },
+    { type: "arrive" },
+    { type: "showDecision" },
+  );
 
   it("takes the tier the judge returns", () => {
     const state = run(decision, { type: "whisper" }, { type: "judged", tier: "muddled" });

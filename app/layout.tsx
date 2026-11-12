@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IM_Fell_English, Literata } from "next/font/google";
+import { IM_Fell_English, Literata, Silkscreen } from "next/font/google";
 import type { ReactNode } from "react";
 import { Atmosphere } from "../src/design/Atmosphere";
 import "./globals.css";
@@ -21,6 +21,14 @@ const literata = Literata({
   variable: "--font-literata",
 });
 
+// A pixel face for short labels only: the light retro game finish.
+const silkscreen = Silkscreen({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-silkscreen",
+});
+
 export const metadata: Metadata = {
   title: "Kingdom of Prod",
   description:
@@ -31,7 +39,7 @@ export const viewport: Viewport = { themeColor: "#150c1e" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${fell.variable} ${literata.variable}`}>
+    <html lang="en" className={`${fell.variable} ${literata.variable} ${silkscreen.variable}`}>
       <body>
         <Atmosphere />
         {children}

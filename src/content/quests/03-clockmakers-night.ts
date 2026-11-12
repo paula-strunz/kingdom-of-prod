@@ -3,9 +3,13 @@ import type { Quest } from "../schema";
 export const clockmakersNight: Quest = {
   id: "clockmakers-night",
   title: "The Clockmaker's Night",
+  place: {
+    name: "The clockmaker's workshop",
+    road: "Back up the lane, one window still burns. Behind it, something is ticking.",
+  },
   scene: {
     id: "clockmakers-night",
-    alt: "A clockmaker's bench by candlelight, covered in gears and brass chimes. Through the window, a nearly full moon.",
+    alt: "The keeper visits the clockmaker at his bench by candlelight. He hammers among gears and brass chimes. Through the window, a nearly full moon.",
   },
   story: [
     "The festival clock lies in pieces on the clockmaker's bench. The harvest moon rises in three nights.",

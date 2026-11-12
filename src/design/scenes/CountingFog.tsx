@@ -1,13 +1,14 @@
-import { Fog, House, Leaf, Pumpkin, Sky, Villager, ink, thinInk } from "./parts";
+import { COAT, Keeper, Villager } from "./folk";
+import { Appear, Bob, Cart, Fog, HangingLantern, House, Leaf, Pumpkin, Sky, ink, thinInk, vars, type SceneProps } from "./parts";
+import styles from "./scenes.module.css";
 
-/** A pile of pumpkins, rows of 4, 3, 2 and 1, resting on y. */
-function Pile({ x, y }: { x: number; y: number }) {
-  const rows = [4, 3, 2, 1];
+/** A pile of pumpkins, one row per entry, resting on y. */
+function Pile({ x, y, rows, dim = 1 }: { x: number; y: number; rows: readonly number[]; dim?: number }) {
   return (
     <g>
       {rows.map((count, row) =>
         Array.from({ length: count }, (_, i) => (
-          <Pumpkin key={`${row}-${i}`} x={x + (i - (count - 1) / 2) * 17} y={y - row * 11} s={0.95} />
+          <Pumpkin key={`${row}-${i}`} x={x + (i - (count - 1) / 2) * 17} y={y - row * 11} s={0.95} dim={dim} />
         )),
       )}
     </g>
@@ -36,11 +37,68 @@ function Stall({ x, w }: { x: number; w: number }) {
   );
 }
 
-/** A market square in thick fog, crowded with dim figures. The pumpkin stalls are piled high and untouched. */
-export function CountingFog() {
+/** The fog-counter's tally board on its pole: what is counted, and how many. */
+function Tally({ x, counting, marks }: { x: number; counting: "visitors" | "pumpkins"; marks: number }) {
+  const strokes = Array.from({ length: marks }, (_, i) => {
+    const col = i % 7;
+    const row = Math.floor(i / 7);
+    return `M${x + 15 + col * 3.6} ${103 + row * 9} v6`;
+  }).join(" ");
   return (
     <g>
-      <Sky horizon={96} stars={false} />
+      <path d={`M${x + 22} 124 V178`} {...ink} stroke="var(--color-ember)" strokeWidth={2.4} />
+      <rect x={x} y="98" width="44" height="26" rx="2" fill="var(--color-parchment)" {...ink} />
+      {counting === "visitors" ? (
+        <g fill="var(--color-ink)">
+          <circle cx={x + 7.5} cy="105" r="2.6" />
+          <path d={`M${x + 3.5} 119 C${x + 3.5} 111 ${x + 11.5} 111 ${x + 11.5} 119 Z`} />
+        </g>
+      ) : (
+        <Pumpkin x={x + 7.5} y={117} s={0.5} />
+      )}
+      <path d={strokes} fill="none" stroke="var(--color-ink)" strokeWidth="1.3" strokeLinecap="round" />
+    </g>
+  );
+}
+
+/** A little sign on a post, with a pumpkin painted on it. */
+function Sign({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <path d={`M${x} ${y} V${y - 22}`} {...ink} stroke="var(--color-ember)" strokeWidth={2} />
+      <rect x={x - 9} y={y - 36} width="18" height="14" rx="1.5" fill="var(--color-parchment)" {...ink} />
+      <Pumpkin x={x} y={y - 25} s={0.5} />
+    </g>
+  );
+}
+
+const VISITORS = [
+  { x: 140, y: 126, s: 0.8 },
+  { x: 170, y: 124, s: 0.75 },
+  { x: 196, y: 128, s: 0.8 },
+  { x: 118, y: 130, s: 0.85 },
+];
+const MORE_VISITORS = [
+  { x: 154, y: 134, s: 0.9 },
+  { x: 184, y: 136, s: 0.9 },
+  { x: 212, y: 132, s: 0.85 },
+  { x: 104, y: 136, s: 0.9 },
+  { x: 128, y: 140, s: 0.95 },
+];
+
+/**
+ * The market square in thick fog. Before the choice: visitors drift between
+ * stalls piled high with unsold pumpkins, and the fog-counter runs up with a
+ * full tally board. After: empty stalls and coins, lovely signs over softening
+ * pumpkins, or a square full of strangers while the growers cart their crop away.
+ */
+export function CountingFog({ outcome, thinking }: SceneProps) {
+  const rows = outcome === "wise" ? [1] : outcome === "poor" ? [] : [4, 3, 2, 1];
+  const crowded = outcome === "poor" || outcome === "muddled";
+
+  return (
+    <g>
+      <Sky horizon={96} stars={false} tint="var(--place-market)" />
       {/* Houses around the square, half lost in fog */}
       <g opacity="0.6">
         <House x={8} y={104} w={36} h={30} />
@@ -53,30 +111,87 @@ export function CountingFog() {
       <rect y="120" width="320" height="60" fill="var(--color-plum)" />
       <path d="M0 140 H320 M0 160 H320 M20 120 L10 180 M70 120 L64 180 M120 120 L118 180 M170 120 V180 M220 120 L224 180 M270 120 L278 180" stroke="var(--color-plum-light)" strokeWidth="1" opacity="0.7" />
 
-      {/* Dim figures, far ones fainter */}
-      <g opacity="0.45">
-        <Villager x={140} y={126} s={0.8} cloak="var(--color-stone)" />
-        <Villager x={170} y={124} s={0.75} cloak="var(--color-stone)" />
-        <Villager x={196} y={128} s={0.8} cloak="var(--color-stone)" />
-        <Villager x={118} y={130} s={0.85} cloak="var(--color-stone)" />
-      </g>
+      {/* Visitors in the fog, far ones fainter. They leave once the market sells. */}
+      {outcome !== "wise" && (
+        <g opacity="0.45">
+          {VISITORS.map((v, i) => (
+            <g key={v.x} className={styles.drift} style={vars({ d: `${-i * 2.1}s` })}>
+              <Villager {...v} cloak="var(--color-stone)" />
+            </g>
+          ))}
+        </g>
+      )}
+      {crowded && (
+        <Appear delay={0.4}>
+          <g opacity="0.5">
+            {MORE_VISITORS.map((v, i) => (
+              <g key={v.x} className={styles.drift} style={vars({ d: `${-i * 1.7 - 1}s` })}>
+                <Villager {...v} cloak="var(--color-stone)" />
+              </g>
+            ))}
+          </g>
+        </Appear>
+      )}
       <Fog y={112} opacity={0.26} amp={5} />
 
       <Stall x={10} w={92} />
-      <Pile x={56} y={134} />
+      <Pile x={56} y={134} rows={rows} dim={outcome === "muddled" ? 0.5 : 1} />
       <Stall x={218} w={92} />
-      <Pile x={264} y={134} />
+      <Pile x={264} y={134} rows={rows} dim={outcome === "muddled" ? 0.5 : 1} />
 
-      <g opacity="0.7">
-        <Villager x={126} y={160} s={1.05} cloak="var(--color-plum-light)" />
-        <Villager x={160} y={166} s={1.15} cloak="var(--color-dusk)" />
-        <Villager x={194} y={158} s={1} cloak="var(--color-plum-light)" />
+      {/* Sold out by nightfall: lanterns lit, coins on the tables, buyers carrying pumpkins home */}
+      {outcome === "wise" && (
+        <Appear delay={0.4}>
+          <HangingLantern x={30} y={80} s={0.9} lit />
+          <HangingLantern x={290} y={80} s={0.9} lit />
+          {[22, 30, 38, 84, 232, 240, 290, 298].map((cx, i) => (
+            <ellipse key={cx} cx={cx} cy={134 - (i % 2)} rx="3" ry="1.6" fill="var(--color-amber)" {...thinInk} strokeWidth={0.6} />
+          ))}
+          <Villager x={214} y={164} s={1.05} cloak={COAT.mustard} species="moth" kit="none" mood="cheer" reach={[-11.4, 10.7]} />
+          <Pumpkin x={202} y={154} s={0.6} />
+          <Villager x={88} y={162} s={1} cloak={COAT.plum} species="crow" kit="none" mood="cheer" reach={[12, 10]} />
+          <Pumpkin x={100} y={152} s={0.6} />
+        </Appear>
+      )}
+      {outcome === "muddled" && (
+        <Appear rise delay={0.5}>
+          <Sign x={20} y={178} />
+          <Sign x={236} y={176} />
+          <Sign x={296} y={178} />
+        </Appear>
+      )}
+      {/* The growers load what they could not sell, and go */}
+      {outcome === "poor" && (
+        <g className={styles.leave}>
+          <Cart x={276} y={176} s={1.5} load />
+          <Villager x={308} y={178} s={1.05} cloak={COAT.olive} species="wolf" fur={1} />
+        </g>
+      )}
+
+      <Keeper x={118} y={178} s={1.2} from={-140} thinking={thinking} />
+
+      {/* The fog-counter, out of breath, and the tally board */}
+      <g className={outcome ? undefined : styles.runIn}>
+        <Tally x={172} counting={outcome === "wise" ? "pumpkins" : "visitors"} marks={outcome === "wise" ? 4 : crowded ? 14 : 10} />
+        <Bob on={!outcome} delay={0.1}>
+          <Villager
+            x={181}
+            y={178}
+            s={1.15}
+            species="rabbit"
+            cloak={COAT.teal}
+            fur={0}
+            kit="satchel"
+            mood={outcome ? "calm" : "panting"}
+            reach={[18, -6]}
+          />
+        </Bob>
       </g>
 
-      <Fog y={138} opacity={0.3} amp={6} />
-      <Fog y={160} opacity={0.3} amp={4} />
-      <Leaf x={104} y={170} rot={40} color="var(--color-leaf-gold)" />
-      <Leaf x={232} y={174} rot={-30} s={0.9} />
+      <Fog y={150} opacity={0.24} amp={6} />
+      <Fog y={168} opacity={0.26} amp={4} />
+      <Leaf x={64} y={172} rot={40} color="var(--color-leaf-gold)" />
+      <Leaf x={250} y={160} rot={-30} s={0.9} />
     </g>
   );
 }

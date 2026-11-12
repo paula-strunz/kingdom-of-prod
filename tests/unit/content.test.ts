@@ -17,6 +17,11 @@ describe("quests", () => {
     expect(() => questSchema.parse(quest)).not.toThrow();
   });
 
+  it("gives every quest its own place and its own scene", () => {
+    expect(new Set(quests.map((q) => q.place.name)).size).toBe(quests.length);
+    expect(new Set(quests.map((q) => q.scene.id)).size).toBe(quests.length);
+  });
+
   it("does not put the wise choice in the same position every time", () => {
     const positions = quests.map((q) => q.choices.findIndex((c) => c.tier === "wise"));
     expect(new Set(positions).size).toBeGreaterThan(1);

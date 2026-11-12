@@ -79,18 +79,85 @@ Each task lists what it depends on and how to tell it is done.
 - [x] **T027** (Fable) Add the ambient sound that starts on "Begin" and the mute button on every screen.
   - Depends on: T024, T012.
 
+## M3b: Living scenes
+
+Added after Paula's first playtest (11 Nov 2026): the game looked lovely but felt too still. See spec section 9 and plan section 8a.
+
+- [x] **T037** (Fable) Add the `travel` phase and the `arrive` action to the engine, with unit tests.
+  - Depends on: T006.
+- [x] **T038** (Fable) Add `place` (name and road line) to the quest schema and to the five quests.
+  - Depends on: T005.
+  - Done when: a unit test fails if two quests share a place or a scene.
+- [x] **T039** (Fable) Draw the keeper as a shared part with a stepped walk cycle.
+  - Depends on: T023.
+- [x] **T040** (Fable) Build the map of Hollowmere for the travel beat: five places, a lantern on each finished place, and the keeper walking to the next one.
+  - Depends on: T037, T038, T039.
+- [x] **T041** (Fable) Keep the scene on screen through the scene, decision, reaction, and lore beats, in the adventure-game layout.
+  - Depends on: T025.
+- [x] **T042** (Fable) Animate the five quest scenes: the keeper walks in and the situation plays out.
+  - Depends on: T039, T041.
+- [x] **T043** (Fable) Draw the 15 outcome scenes, three per quest, shown in the reaction beat.
+  - Depends on: T042.
+  - Done when: each outcome shows what its reaction text says.
+- [x] **T044** (Fable) Add a color per place to the tokens, and fade the page to it.
+  - Depends on: T038.
+- [x] **T045** (Fable) Add the light retro finish: pixel typeface for labels, scan lines on the scene, and story lines that appear one by one.
+  - Depends on: T041.
+- [x] **T046** (Fable) Replace `ambience.ts` with `sound.ts`: base ambience, a layer per place, and the effects, all under one master gain.
+  - Depends on: T024.
+- [x] **T047** (Fable) Write `cues.ts` and its unit tests, and play the cues from the game.
+  - Depends on: T046, T037.
+  - Done when: the raven caws on arrival at quest 4.
+- [x] **T048** (Fable) Update and extend the end-to-end tests: travel beat, scene in every beat, 15 outcomes, five places, and reduced motion.
+  - Depends on: T040, T043, T044.
+- [x] **T049** (Paula) Play it again. Say whether it now feels like a game, and name any sound that is too loud or any outcome scene that is unclear.
+  - Depends on: T048.
+
+## M3c: Full screen and new characters
+
+Added after Paula's second playtest (11 Nov 2026): "I want to be inside of the game", and the characters are too plain. See spec sections 9.1 and 9.2, and plan section 8b.
+
+- [x] **T050** (Fable) Remove the card and the plate. Make the scene full width on the sky, with a ground band to the bottom of the screen.
+  - Depends on: T041.
+- [x] **T051** (Fable) Turn the text and choices into a dialogue box on the ground, and float the lanterns, mute, and title over the world.
+  - Depends on: T050.
+- [x] **T052** (Fable) Open the whisper field from a button, so the dialogue box stays small.
+  - Depends on: T051.
+- [x] **T053** (Fable) Slide the scene in on arrival.
+  - Depends on: T050.
+- [x] **T054** (Opus) Redesign the keeper, the villagers, and the named characters as original cute autumn creatures, with small living details.
+  - Depends on: T039.
+  - Done when: every scene and outcome still reads correctly in a screenshot.
+- [x] **T055** (Fable) Update the end-to-end tests: no frame around the scene, the whole scene visible on phone and desktop, and the whisper button.
+  - Depends on: T051, T052, T054.
+- [x] **T056** (Paula) Play it again on a phone and on a laptop.
+  - Depends on: T055.
+  - Result (11 Nov 2026): better, but the characters are not liked, and on a laptop the game still sits in the middle of the screen.
+- [x] **T057** (Opus) Redesign the characters as animal folk in clothes, from Paula's reference picture: simpler than the reference, and fitted to the scenes.
+  - Depends on: T054.
+- [x] **T058** (Fable) Draw side wings for every scene, the map, and the endings, so the place fills a wide screen from edge to edge.
+  - Depends on: T050.
+- [x] **T059** (Fable) Update the end-to-end test for the full-width scene.
+  - Depends on: T058.
+- [ ] **T060** (Paula) Play it again on a laptop.
+  - Depends on: T057, T059.
+- [x] **T061** (Fable) Review the code against good practice and add a test that checks the rules (plan.md, section 8c).
+  - Depends on: T059.
+- [x] **T062** (Fable) Fix what the review found: split the characters out of `parts.tsx`, one shared screen layout in `Game.tsx`, and stop fading sound layers when the sound stops.
+  - Depends on: T061.
+
 ## M4: Release
 
 - [ ] **T028** (Fable) Accessibility pass: keyboard-only play, focus states, announced reactions, tap target sizes, and contrast.
-  - Depends on: T026.
+  - Depends on: T026, T048.
 - [x] **T029** (Fable) Add end-to-end checks for mute, reduced motion, and no cookies or storage after a full game.
   - Depends on: T027.
 - [x] **T030** (Fable) Add a release check that requests every lore source URL.
   - Depends on: T011.
 - [ ] **T031** (Paula) Timed first play on a real phone. Trim or add story lines to land between 8 and 12 minutes.
-  - Depends on: T026, T027.
-- [ ] **T032** (Fable) Performance check on a mid-range phone profile, and fix anything over 3 seconds to interactive.
-  - Depends on: T026.
+  - Depends on: T026, T027, T048. Listen to every sound effect on the phone speaker.
+- [ ] **T032** (Fable) Performance check on a mid-range phone profile, and fix anything over 3 seconds to interactive. Check that the scene animations stay smooth.
+  - Depends on: T026, T048.
 - [ ] **T033** (Paula) Three WIP members play without help. Note where each one hesitates.
   - Depends on: T031.
 - [ ] **T034** (Fable) Fix what the playtests found. Re-run the eval if a rubric or the prompt changed.
@@ -108,4 +175,4 @@ Each task lists what it depends on and how to tell it is done.
 
 ## Tasks waiting on Paula
 
-T004, T010, T017 (labels), T019 (Phoenix key), T020, T031, T033, T035.
+T004, T010, T020, T031, T033, T035, T060.

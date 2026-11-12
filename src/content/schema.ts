@@ -12,6 +12,8 @@ export const questSchema = z
   .object({
     id: z.string().regex(/^[a-z0-9-]+$/),
     title: line,
+    /** Where the quest happens: shown on the travel beat, with one line about the road there. */
+    place: z.object({ name: line, road: line }),
     scene: z.object({ id: line, alt: line }),
     story: z.array(line).min(2).max(3),
     choices: z

@@ -3,48 +3,134 @@
  * the foggy night drawn by src/design/Atmosphere.tsx.
  */
 
-/* ---------- Page frame ---------- */
+/* ---------- The page: the whole screen is the game ---------- */
 
 .page {
   position: relative;
   z-index: 1; /* above the atmosphere */
-  max-width: 44rem;
-  margin: 0 auto;
-  padding: var(--space-2) var(--space-2) var(--space-4);
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  --gutter: var(--space-2);
+  --column: 44rem;
 }
 
+/* Lanterns and mute float over the sky. */
 .bar {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
+  width: 100%;
+  max-width: calc(var(--column) + 2 * var(--gutter));
   min-height: var(--tap-min);
+  margin: 0 auto;
+  padding: var(--space-2) var(--gutter) 0;
 }
 
-/* The storybook page: plum paper with a fine gilt rule inside its edge. */
-.card {
-  position: relative;
+/*
+ * The world: sky (the atmosphere), then the scene edge to edge, then ground to
+ * the bottom of the screen. Nothing frames it.
+ */
+.world {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  background:
-    radial-gradient(ellipse 120% 70% at 50% 0%, var(--color-plum-raised), transparent 70%),
-    var(--color-plum);
-  border: 1px solid rgb(160 106 50 / 0.55);
-  border-radius: var(--radius-page);
-  box-shadow:
-    inset 0 0 0 6px var(--color-plum),
-    inset 0 0 0 7px rgb(255 199 107 / 0.16),
-    0 1.5rem 3.5rem rgb(0 0 0 / 0.55),
-    0 0 5rem rgb(255 199 107 / 0.04);
+  --ground: var(--ground-default);
+  --land-sky: var(--color-plum);
+  --land-horizon: color-mix(in srgb, var(--color-dusk) 50%, var(--place-tint, var(--color-dusk)));
+  --land-line: 62%;
 }
 
-.card p {
+/* Indoors: the land is a wall, and the ground is the dark under the bench. */
+.world[data-world="clockmakers-night"] {
+  --ground: var(--ground-workshop);
+  --land-sky: color-mix(in srgb, var(--color-plum) 70%, var(--place-workshop));
+  --land-horizon: var(--land-sky);
+  --land-line: 72%;
+}
+
+.world[data-world="barons-raven"] {
+  --land-horizon: var(--color-plum);
+}
+
+/*
+ * The land: the scene's sky, horizon and ground carried on to both edges of
+ * the screen, so a wide screen shows a landscape and not a picture.
+ */
+.land {
+  background: linear-gradient(
+    to bottom,
+    transparent 6%,
+    var(--land-sky) 40%,
+    var(--land-horizon) calc(var(--land-line) - 4%),
+    var(--ground) var(--land-line)
+  );
+  margin-top: calc(-1 * var(--space-3));
+}
+
+.world[data-world="map"] {
+  --ground: var(--ground-map);
+}
+
+/*
+ * The scene. Always whole: on a phone it spans the screen, and on a wide
+ * screen its width is capped so that all of it fits above the dialogue box,
+ * with its sides fading into the night.
+ */
+.stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  animation: stage-in 0.9s var(--ease-soft) both;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
+}
+
+/* Faint scan lines, and the foot of the scene melting into the ground. */
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, transparent 82%, var(--ground) 100%),
+    repeating-linear-gradient(to bottom, transparent 0 2px, rgb(13 6 20 / 0.12) 2px 3px);
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translateX(9%);
+  }
+}
+
+.ground {
+  position: relative;
+  flex: 1;
+  margin-top: -1px;
+  padding: 0 var(--gutter) var(--space-4);
+  background: linear-gradient(to bottom, var(--ground), var(--color-night) 28rem);
+}
+
+/* The dialogue box: it sits on the ground and overlaps the foot of the scene, like an old adventure game. */
+.dialogue {
+  position: relative;
+  z-index: 2;
+  max-width: var(--column);
+  margin: calc(-1 * var(--space-1)) auto 0;
+  padding: var(--space-3);
+  border: 2px solid var(--color-ember);
+  border-radius: var(--radius);
+  background: rgb(21 12 30 / 0.93);
+  box-shadow:
+    inset 0 0 0 3px var(--color-night),
+    inset 0 0 0 4px rgb(255 199 107 / 0.22),
+    0 0.75rem 2.5rem rgb(0 0 0 / 0.5);
+}
+
+.dialogue p {
   margin: 0;
 }
 
@@ -78,19 +164,27 @@
 
 /* ---------- Headings ---------- */
 
+/* The title of the quest floats over the sky, above the scene. */
 .heading {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  width: 100%;
+  max-width: calc(var(--column) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: var(--space-2) var(--gutter) 0;
+  text-shadow: 0 0 0.75rem var(--color-night);
 }
 
 .kicker {
   margin: 0;
-  font-family: var(--font-story);
+  font-family: var(--font-pixel);
   font-size: var(--font-size-kicker);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.4;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-mist);
 }
@@ -124,14 +218,13 @@
 
 /* ---------- Title screen ---------- */
 
-.titleCard {
-  margin-block: auto;
-  padding-block: var(--space-5) var(--space-4);
+.titleScreen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--gutter) var(--space-5);
   text-align: center;
-  background:
-    radial-gradient(circle at 50% 18%, rgb(255 199 107 / 0.14), transparent 45%),
-    radial-gradient(ellipse 120% 70% at 50% 0%, var(--color-plum-raised), transparent 70%),
-    var(--color-plum);
 }
 
 .titleBeat {
@@ -147,8 +240,7 @@
     0 0.15rem 0 var(--color-ink);
 }
 
-.hero::after,
-.endingTitle::after {
+.hero::after {
   margin-inline: auto;
 }
 
@@ -165,23 +257,39 @@
 
 /* ---------- Scene ---------- */
 
-/* The illustration sits in an inked plate, like a picture in a book. */
-.plate {
-  padding: 5px;
-  border-radius: 0.9rem;
-  background: var(--color-ink);
-  box-shadow:
-    0 0 0 1px rgb(160 106 50 / 0.6),
-    0 0.75rem 2rem rgb(0 0 0 / 0.45);
-}
-
+/*
+ * As wide as the screen, and never taller than a 16:9 scene of that width. With
+ * `slice` scaling this shows the whole scene on a phone, and the scene plus its
+ * wings on a wide screen. The scene itself is never cropped.
+ */
 .scene {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  border-radius: 0.6rem;
-  background: var(--color-night);
+  height: min(56.25vw, 62dvh);
+}
+
+/* One line about the road, on the travel beat. */
+.road {
+  max-width: var(--measure);
+  font-style: italic;
+  color: var(--color-mist);
+}
+
+/* Story lines arrive one after another, like lines of dialogue. */
+.spoken p {
+  animation: fade-in var(--motion-slow) ease both;
+}
+
+.spoken p:nth-child(1) {
+  animation-delay: 0.9s;
+}
+
+.spoken p:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.spoken p:nth-child(3) {
+  animation-delay: 3.1s;
 }
 
 .story {
@@ -382,10 +490,6 @@
 }
 
 .reaction {
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius);
-  background: var(--color-plum-raised);
-  box-shadow: inset 0 0 0 1px rgb(255 199 107 / 0.18);
   font-size: var(--font-size-lore);
   line-height: 1.55;
 }
@@ -399,10 +503,6 @@
 }
 
 /* ---------- Ending ---------- */
-
-.endingTitle {
-  text-align: center;
-}
 
 .learned {
   display: flex;
@@ -563,16 +663,11 @@
 
 @media (min-width: 48rem) {
   .page {
-    padding: var(--space-3) var(--space-3) var(--space-5);
-    gap: var(--space-3);
+    --gutter: var(--space-3);
   }
 
-  .card {
-    padding: var(--space-5) var(--space-5) var(--space-4);
-  }
-
-  .titleCard {
-    padding-block: 5.5rem 4.5rem;
+  .dialogue {
+    padding: var(--space-4);
   }
 
   .lantern {

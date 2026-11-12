@@ -3,9 +3,13 @@ import type { Quest } from "../schema";
 export const whisperingWell: Quest = {
   id: "whispering-well",
   title: "The Whispering Well",
+  place: {
+    name: "The old well",
+    road: "A path of wet stones leads down into the marsh, where the fog sits low and the old well waits.",
+  },
   scene: {
     id: "whispering-well",
-    alt: "The mayor stands beside an old stone well in the fog, pointing down into it. A single bucket hangs from a frayed rope.",
+    alt: "The keeper faces the mayor across an old stone well in the fog. She points down into it. A single bucket hangs from a frayed rope.",
   },
   story: [
     "The mayor meets you at the old well, the one that whispers when the wind is low.",

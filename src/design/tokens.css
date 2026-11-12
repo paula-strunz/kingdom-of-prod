@@ -23,10 +23,23 @@
   --color-leaf-gold: #d99a3a;
   --color-moss: #4f5a3a;
 
+  /* One color per place. It washes the sky of the scene and the page behind the game. */
+  --place-gate: #a8433a; /* the village gate: the last red of dusk */
+  --place-well: #1f6f6a; /* the old well: marsh green */
+  --place-workshop: #7a4a1a; /* the workshop: candle-warm wood */
+  --place-river: #24508f; /* the keeper's window: cold moonlit blue */
+  --place-market: #7d7a86; /* the market: grey fog */
+
+  /* The ground under each kind of scene: the page continues it to the bottom of the screen. */
+  --ground-default: #2c1b3b;
+  --ground-workshop: var(--color-ink);
+  --ground-map: #2f1d40;
+
   /* Type */
   /* --font-fell and --font-literata come from next/font in app/layout.tsx. */
   --font-display: var(--font-fell, "Iowan Old Style"), "Palatino Linotype", Georgia, serif;
   --font-story: var(--font-literata, Georgia), "Iowan Old Style", "Palatino Linotype", serif;
+  --font-pixel: var(--font-silkscreen, "Courier New"), monospace; /* short labels only */
   --font-size-body: 1.1875rem; /* 19px, never below 18px */
   --font-size-small: 1.125rem; /* 18px, notes and the source line */
   --font-size-kicker: 1rem; /* 16px, spaced capitals only, never running text */

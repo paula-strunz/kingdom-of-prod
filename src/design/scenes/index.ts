@@ -7,11 +7,14 @@ import { EndingMuddles } from "./EndingMuddles";
 import { EndingThrives } from "./EndingThrives";
 import { LanternPleas } from "./LanternPleas";
 import { WhisperingWell } from "./WhisperingWell";
+import type { SceneProps } from "./parts";
 
-export { VIEWBOX } from "./parts";
+export { VillageMap } from "./Map";
+export { Backdrop, Seams, WIDE_VIEWBOX } from "./Wings";
+export { VIEWBOX, type SceneProps } from "./parts";
 
-/** Scene illustrations by scene id. Each draws inside a 320 x 180 viewBox. */
-export const SCENES: Record<string, ComponentType> = {
+/** Scenes by scene id. Quest scenes react to the outcome; ending scenes ignore it. Each draws inside a 320 x 180 viewBox. */
+export const SCENES: Record<string, ComponentType<SceneProps>> = {
   "lantern-pleas": LanternPleas,
   "whispering-well": WhisperingWell,
   "clockmakers-night": ClockmakersNight,

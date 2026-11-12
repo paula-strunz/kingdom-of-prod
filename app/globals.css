@@ -26,6 +26,23 @@ body {
   overflow-x: hidden;
 }
 
+/* The place the keeper is in. Game.tsx sets data-place; the atmosphere fades to its color. */
+body[data-place="lantern-pleas"] {
+  --place-tint: var(--place-gate);
+}
+body[data-place="whispering-well"] {
+  --place-tint: var(--place-well);
+}
+body[data-place="clockmakers-night"] {
+  --place-tint: var(--place-workshop);
+}
+body[data-place="barons-raven"] {
+  --place-tint: var(--place-river);
+}
+body[data-place="counting-fog"] {
+  --place-tint: var(--place-market);
+}
+
 ::selection {
   background: var(--color-amber);
   color: var(--color-night);

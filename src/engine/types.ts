@@ -5,6 +5,7 @@ export const TIER_VALUE: Record<Tier, number> = { wise: 1, muddled: 0, poor: -1 
 
 export type Phase =
   | "title"
+  | "travel"
   | "scene"
   | "decision"
   | "judging"
@@ -26,6 +27,7 @@ export type GameState = {
 
 export type Action =
   | { type: "begin" }
+  | { type: "arrive" }
   | { type: "showDecision" }
   | { type: "choose"; choiceId: string }
   | { type: "whisper" }

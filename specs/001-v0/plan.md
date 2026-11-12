@@ -232,6 +232,8 @@ To keep to them: the characters live in `src/design/scenes/folk.tsx`, apart from
 | Unit: sound cues | The raven caws on arrival at quest 4, every tier has a lantern cue, and every ending has a tune |
 | Unit: judge | Prompt contains the rubric and the delimited answer, and the parser rejects anything but a tier |
 | End-to-end | One path per ending with written choices, one whisper path with the judge mocked, one with the judge failing, keyboard-only play, mute, and no cookies or storage after a full game. Also: the travel beat before each quest, the scene on screen in every beat, the outcome scene for each of the 15 quest and tier pairs, five different places, and no running animation under reduced motion |
+| Unit: code rules | Layers, server-only code, nothing stored, and hygiene (section 8c) |
+| End-to-end: accessibility | An axe scan (WCAG 2.1 A and AA) of every kind of screen, every control at least 44px, and a visible focus ring on every control |
 | Manual | Screen reader pass, reduced motion, a real phone, a timed first play, and listening to every sound effect |
 | Eval | The 20 labels against the live model, by hand before release |
 

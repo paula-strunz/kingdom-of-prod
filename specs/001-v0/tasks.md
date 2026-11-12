@@ -64,6 +64,7 @@ Each task lists what it depends on and how to tell it is done.
 
 ## M3: Design in
 
+  - Result (12 Nov 2026): a local run (`npm run eval -- --local`) with `claude-haiku-5-5` and prompt v1 agrees on 20 of 20. Still open: `PHOENIX_ENDPOINT` is empty, so the run is not recorded in Arize.
 - [x] **T021** (Opus) Deliver `tokens.css`: palette, type scale, spacing, and motion timings, with AA contrast checked.
   - Depends on: nothing. This can start on day one.
 - [x] **T022** (Opus) Deliver the layout guide and one reference page.
@@ -148,16 +149,18 @@ Added after Paula's second playtest (11 Nov 2026): "I want to be inside of the g
 
 ## M4: Release
 
-- [ ] **T028** (Fable) Accessibility pass: keyboard-only play, focus states, announced reactions, tap target sizes, and contrast.
+- [x] **T028** (Fable) Accessibility pass: keyboard-only play, focus states, announced reactions, tap target sizes, and contrast.
   - Depends on: T026, T048.
+  - Result (12 Nov 2026): `tests/e2e/a11y.spec.ts` scans every kind of screen with axe (WCAG 2.1 A and AA) on phone and desktop with no violations, checks every control is at least 44px, and checks the focus ring on every control.
 - [x] **T029** (Fable) Add end-to-end checks for mute, reduced motion, and no cookies or storage after a full game.
   - Depends on: T027.
 - [x] **T030** (Fable) Add a release check that requests every lore source URL.
   - Depends on: T011.
 - [ ] **T031** (Paula) Timed first play on a real phone. Trim or add story lines to land between 8 and 12 minutes.
   - Depends on: T026, T027, T048. Listen to every sound effect on the phone speaker.
-- [ ] **T032** (Fable) Performance check on a mid-range phone profile, and fix anything over 3 seconds to interactive. Check that the scene animations stay smooth.
+- [x] **T032** (Fable) Performance check on a mid-range phone profile, and fix anything over 3 seconds to interactive. Check that the scene animations stay smooth.
   - Depends on: T026, T048.
+  - Result (12 Nov 2026): on a Pixel 7 profile with the CPU slowed 4 times and a slow 4G network, the game is interactive after 2.7 seconds (430 KB transferred). Every scene and outcome holds 60 frames per second.
 - [ ] **T033** (Paula) Three WIP members play without help. Note where each one hesitates.
   - Depends on: T031.
 - [ ] **T034** (Fable) Fix what the playtests found. Re-run the eval if a rubric or the prompt changed.

@@ -192,19 +192,22 @@ export function Game() {
                   The fog swallowed your words. Choose one of the three paths.
                 </p>
               )}
-              <ul className={styles.choices}>
-                {quest.choices.map((choice) => (
-                  <li key={choice.id}>
-                    <button
-                      type="button"
-                      className={styles.choice}
-                      onClick={() => choose(choice.id)}
-                    >
-                      {choice.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              {/* The whisper form takes the place of the three paths, so the beat still fits one screen. */}
+              {!whisperOpen && (
+                <ul className={styles.choices}>
+                  {quest.choices.map((choice) => (
+                    <li key={choice.id}>
+                      <button
+                        type="button"
+                        className={styles.choice}
+                        onClick={() => choose(choice.id)}
+                      >
+                        {choice.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {!state.whisperBlocked && !whisperOpen && (
                 <button
                   type="button"
@@ -229,9 +232,14 @@ export function Game() {
                   <p id="whisper-note" className={styles.small}>
                     Your answer is sent to an AI model to be judged. It is not saved.
                   </p>
-                  <button type="submit" className={styles.secondary} disabled={!whisper.trim()}>
-                    Whisper
-                  </button>
+                  <div className={styles.whisperActions}>
+                    <button type="submit" className={styles.secondary} disabled={!whisper.trim()}>
+                      Whisper
+                    </button>
+                    <button type="button" className={styles.quiet} onClick={() => setWhisperOpen(false)}>
+                      Back to the three paths
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
@@ -299,6 +307,14 @@ function Ending({
 }) {
   const id = endingFor(reputation(state.tiers));
   const ending = endings[id];
+  // Two steps, so each fits one screen: what became of Hollowmere, then the lessons.
+  const [step, setStep] = useState<"story" | "lessons">("story");
+  const lessonsRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (step === "lessons") lessonsRef.current?.focus();
+  }, [step]);
+
   return (
     <World
       id={`ending-${id}`}
@@ -308,24 +324,34 @@ function Ending({
       headingRef={headingRef}
       scene={<Scene id={`ending-${id}`} alt={ending.title} />}
     >
-      <div className={styles.beat}>
-        <div className={styles.story}>
-          {ending.lines.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </div>
-        <div className={styles.learned}>
-          <h2 className={styles.kicker}>What you learned</h2>
-          <ul className={styles.recap}>
-            {quests.map((quest) => (
-              <li key={quest.id}>{quest.lore.line}</li>
+      {step === "story" ? (
+        <div className={styles.beat}>
+          <div className={styles.story}>
+            {ending.lines.map((line) => (
+              <p key={line}>{line}</p>
             ))}
-          </ul>
+          </div>
+          <button type="button" className={styles.primary} onClick={() => setStep("lessons")}>
+            What you learned
+          </button>
         </div>
-        <button type="button" className={styles.primary} onClick={() => dispatch({ type: "restart" })}>
-          Play again
-        </button>
-      </div>
+      ) : (
+        <div className={styles.beat}>
+          <div className={styles.learned}>
+            <h2 className={styles.kicker} tabIndex={-1} ref={lessonsRef}>
+              What you learned
+            </h2>
+            <ul className={styles.recap}>
+              {quests.map((quest) => (
+                <li key={quest.id}>{quest.lore.line}</li>
+              ))}
+            </ul>
+          </div>
+          <button type="button" className={styles.primary} onClick={() => dispatch({ type: "restart" })}>
+            Play again
+          </button>
+        </div>
+      )}
     </World>
   );
 }

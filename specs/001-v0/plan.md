@@ -223,6 +223,19 @@ These rules are checked by `tests/unit/architecture.test.ts`, which runs with th
 
 To keep to them: the characters live in `src/design/scenes/folk.tsx`, apart from the scenery in `parts.tsx`. The map, the quests and the ending share one layout component, `World`, in `Game.tsx`.
 
+## 8d. One screen, no scrolling (added after the fourth playtest)
+
+This section covers "the game fits the screen" in spec section 9.1.
+
+- **One screen high.** `.page` is exactly `100dvh` (with `100vh` as the fallback) and hides overflow. The body does not scroll.
+- **Who gives up height.** The world is a column: heading, land (the scene), ground (the dialogue box). The land's ideal height is still a 16:9 scene of the screen's width, capped at 62% of the screen height. It shrinks far more readily than the ground, down to a floor, so the dialogue box keeps its natural height. Because the SVG uses `slice` scaling, a shorter scene shows more of the wings and is never cropped.
+- **Last resort.** If the screen is too short even with the scene at its floor, the ground scrolls inside itself. The tests allow this only outside the sizes named in acceptance criterion 21.
+- **Wide screens.** From 64rem the text column widens and the three choices become a three-column grid.
+- **Short screens.** Under 700px of height the heading, the gaps and the paddings tighten. The font size stays at 18px or more.
+- **Whisper.** While the whisper form is open it takes the place of the three choices, with a "Back to the three paths" button.
+- **Ending.** `Ending` keeps a local `step` state: the story first, then the lessons. The engine does not change.
+- **iPhone and iPad.** The viewport uses `viewport-fit=cover`, and the bar and the ground pad by the safe-area insets. Playwright gets two WebKit projects, `iphone` and `ipad`, which run `tests/e2e/fit.spec.ts` only. That test plays a full game at each size and checks on every beat that the page cannot scroll and that every control and text block is inside the screen.
+
 ## 9. Testing
 
 | Layer | What it covers |
@@ -234,6 +247,7 @@ To keep to them: the characters live in `src/design/scenes/folk.tsx`, apart from
 | End-to-end | One path per ending with written choices, one whisper path with the judge mocked, one with the judge failing, keyboard-only play, mute, and no cookies or storage after a full game. Also: the travel beat before each quest, the scene on screen in every beat, the outcome scene for each of the 15 quest and tier pairs, five different places, and no running animation under reduced motion |
 | Unit: code rules | Layers, server-only code, nothing stored, and hygiene (section 8c) |
 | End-to-end: accessibility | An axe scan (WCAG 2.1 A and AA) of every kind of screen, every control at least 44px, and a visible focus ring on every control |
+| End-to-end: fit | A full game on seven screen sizes, four of them in WebKit: on every beat nothing scrolls and everything is on screen (section 8d) |
 | Manual | Screen reader pass, reduced motion, a real phone, a timed first play, and listening to every sound effect |
 | Eval | The 20 labels against the live model, by hand before release |
 

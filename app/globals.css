@@ -23,7 +23,7 @@ body {
   line-height: var(--line-height);
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* The place the keeper is in. Game.tsx sets data-place; the atmosphere fades to its color. */

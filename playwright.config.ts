@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 3100;
+const FIT = /fit\.spec\.ts/;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -16,8 +17,17 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: FIT },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: FIT },
+    // "The game fits the screen" (spec 9.1): one full game per screen size, with no scrolling.
+    // The iPhone and iPad sizes run in WebKit, Safari's engine.
+    { name: "iphone-se", use: { ...devices["iPhone SE (3rd gen)"] }, testMatch: FIT },
+    { name: "iphone", use: { ...devices["iPhone 15"] }, testMatch: FIT },
+    { name: "ipad", use: { ...devices["iPad (gen 7)"] }, testMatch: FIT },
+    { name: "ipad-landscape", use: { ...devices["iPad (gen 7) landscape"] }, testMatch: FIT },
+    { name: "android", use: { ...devices["Pixel 7"] }, testMatch: FIT },
+    { name: "laptop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 720 } }, testMatch: FIT },
+    { name: "wide", use: { ...devices["Desktop Chrome"], viewport: { width: 1920, height: 1080 } }, testMatch: FIT },
   ],
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,

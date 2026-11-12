@@ -83,8 +83,11 @@ test("the ending passes axe", async ({ page }) => {
     await button(page, "Read the lore").click();
     await page.getByRole("button", { name: /^(Continue|See what became of Hollowmere)$/ }).click();
   }
-  await expect(button(page, "Play again")).toBeVisible();
+  await expect(button(page, "What you learned")).toBeVisible();
   await check(page, "ending");
+  await button(page, "What you learned").click();
+  await expect(button(page, "Play again")).toBeVisible();
+  await check(page, "lessons");
 });
 
 test("the keyboard focus can be seen on every control", async ({ page }) => {
@@ -92,7 +95,6 @@ test("the keyboard focus can be seen on every control", async ({ page }) => {
   await button(page, "Begin").click();
   await button(page, "Arrive").click();
   await button(page, "What will you do?").click();
-  await button(page, "Whisper your own answer").click();
 
   const count = await page.locator("button, textarea").count();
   expect(count).toBeGreaterThan(4);

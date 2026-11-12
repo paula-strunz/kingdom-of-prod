@@ -138,6 +138,8 @@ The first playtest (Paula, 11 Nov 2026) found the look and the sound lovely but 
 - Body text of at least 18px on a phone, and WCAG AA contrast for all text.
 - One decision per screen, with tap targets of at least 44px.
 - **The game fills the screen.** There is no framed picture and no card around the game. The scene is the world: its sky runs up behind the lanterns and the title, and its ground runs down to the bottom of the screen. Text and choices sit in a dialogue box on the ground, as in an old adventure or role-playing game. (Second playtest, Paula, 11 Nov 2026: "I want to be inside of the game.")
+- **The game fits the screen.** The player never scrolls the page. On every beat, the lanterns, the title, the scene, the text, and the buttons are all on screen at once. The scene gives up height first to make room for the text. This holds on a phone held upright (from 375 by 667), on a tablet both ways round, and on a laptop. On a wide screen the three choices sit side by side. Only if a screen is too short for the text, such as a phone held sideways, does the dialogue box scroll inside itself; the page still does not. (Fourth playtest, Paula, 12 Nov 2026: "I have to scroll, so not ideal.")
+- **The ending is two steps.** First what became of Hollowmere, then "What you learned" with the five lessons, so each step fits the screen.
 - No part of a scene is cropped at any screen size. On a wide screen the scene does not sit in the middle with empty sides: the place itself continues to both edges of the screen, with more sky, ground, trees, and houses, or more wall indoors. Only the dialogue box stays in the middle. (Third playtest, Paula, 11 Nov 2026.)
 - When the keeper arrives at a place, the scene slides in from the side the keeper walks toward, so it feels like walking into it.
 
@@ -212,6 +214,8 @@ The first playtest (Paula, 11 Nov 2026) found the look and the sound lovely but 
 18. With reduced motion set, no scene or map animation runs, and every scene still shows its outcome.
 19. On a phone and on a desktop, the scene touches both side edges of the screen, with no frame, card, border, or faded sides, and the whole scene is visible.
 20. The dialogue box, the lanterns, and the mute button stay readable over the scene: text contrast is still WCAG AA.
+21. The page never scrolls. On a phone held upright (375 by 667 and larger), an iPad both ways round, and a laptop, every beat of a full game shows all of its text and buttons without scrolling anything.
+22. The game plays to the end in Safari's engine on an iPhone and an iPad profile, as well as in Chrome.
 
 ## 12. Success measures (from the PRD)
 
@@ -231,5 +235,6 @@ The first playtest (Paula, 11 Nov 2026) found the look and the sound lovely but 
 | 6 | The first playtest found the game too still. What changes? | Section 9 is rewritten: animated scenes with the keeper, a map between quests, a place per quest, and sound effects. This replaces "motion is slow and decorative" and "one ambient sound". |
 | 7 | Who draws and animates the new scenes? | Fable, on top of Opus's scenes, palette, and parts. Opus can review the result. |
 | 9 | The second playtest: the game sits in a small window, and the characters are too plain. What changes? | The game fills the screen with the dialogue box over the world (section 9.1), and the villagers become original cute creatures (section 9.2). |
+| 11 | The fourth playtest: the player has to scroll. What changes? | The page is exactly one screen high and never scrolls. The scene shrinks to make room for the text, wide screens put the choices side by side, and the ending becomes two steps (section 9.1). The game is also tested in Safari's engine on iPhone and iPad profiles. |
 | 10 | Who designs the new characters? | Claude Opus 5.5, as a subagent, at Paula's request. Fable builds the full-screen layout. |
 | 8 | Does the travel beat advance by itself? | No. The player taps "Arrive", so nothing is timed and the game stays playable by keyboard and screen reader. |

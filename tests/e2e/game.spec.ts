@@ -80,6 +80,10 @@ for (const [tier, ending] of [
     for (let i = 0; i < quests.length; i++) {
       await expect(lanterns.nth(i)).toHaveAttribute("data-state", LANTERN[tier]);
     }
+    for (const line of endings[ending].lines) await expect(page.getByText(line)).toBeVisible();
+    // The ending is two steps: what became of Hollowmere, then the lessons.
+    await button(page, "What you learned").click();
+    await expect(page.getByRole("heading", { name: "What you learned" })).toBeFocused();
     for (const quest of quests) await expect(page.getByText(quest.lore.line)).toBeVisible();
     expect(judgeCalls).toBe(0);
 

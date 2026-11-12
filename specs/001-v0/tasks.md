@@ -146,6 +146,14 @@ Added after Paula's second playtest (11 Nov 2026): "I want to be inside of the g
   - Depends on: T059.
 - [x] **T062** (Fable) Fix what the review found: split the characters out of `parts.tsx`, one shared screen layout in `Game.tsx`, and stop fading sound layers when the sound stops.
   - Depends on: T061.
+- [x] **T063** (Fable) Make every beat fit one screen with no scrolling, on phones, tablets and laptops (plan.md, section 8d). Split the ending into two steps.
+  - Depends on: T058.
+  - Result (12 Nov 2026): every beat of a full game fits one screen with no scrolling at seven sizes: iPhone SE, iPhone 15, iPad upright and sideways, Pixel 7, a 1280 by 720 laptop and a 1920 by 1080 screen. The whisper form now takes the place of the three choices while it is open.
+- [x] **T064** (Fable) Add `tests/e2e/fit.spec.ts` and WebKit projects for an iPhone and an iPad profile.
+  - Depends on: T063.
+  - Result (12 Nov 2026): `tests/e2e/fit.spec.ts` runs on those seven sizes; the iPhone and iPad sizes run in WebKit. A phone held sideways is not in the list: there the dialogue box may scroll inside itself.
+- [ ] **T065** (Paula) Play it on a real iPhone and an iPad.
+  - Depends on: T064.
 
 ## M4: Release
 
@@ -178,4 +186,4 @@ Added after Paula's second playtest (11 Nov 2026): "I want to be inside of the g
 
 ## Tasks waiting on Paula
 
-T004, T010, T020, T031, T033, T035, T060.
+T004, T010, T020, T031, T033, T035, T060, T065.

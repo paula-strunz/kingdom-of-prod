@@ -35,7 +35,8 @@ export const metadata: Metadata = {
     "A 10-minute spooky autumn story game. Five strange problems, each a real product dilemma in disguise.",
 };
 
-export const viewport: Viewport = { themeColor: "#150c1e" };
+// `cover` lets the world run under the notch; the bar and the ground pad by the safe-area insets.
+export const viewport: Viewport = { themeColor: "#150c1e", viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

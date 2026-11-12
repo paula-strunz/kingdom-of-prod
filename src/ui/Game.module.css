@@ -8,11 +8,17 @@
 .page {
   position: relative;
   z-index: 1; /* above the atmosphere */
-  min-height: 100dvh;
+  /* Exactly one screen: the page never scrolls (spec 9.1, "the game fits the screen"). */
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  --gutter: var(--space-2);
+  --gutter: max(var(--space-2), env(safe-area-inset-left), env(safe-area-inset-right));
   --column: 44rem;
+  --scene-floor: 6rem;
+  --dialogue-pad: var(--space-3);
+  --beat-gap: var(--space-3);
 }
 
 /* Lanterns and mute float over the sky. */
@@ -25,9 +31,10 @@
   gap: var(--space-2);
   width: 100%;
   max-width: calc(var(--column) + 2 * var(--gutter));
+  flex: none;
   min-height: var(--tap-min);
   margin: 0 auto;
-  padding: var(--space-2) var(--gutter) 0;
+  padding: max(var(--space-2), env(safe-area-inset-top)) var(--gutter) 0;
 }
 
 /*
@@ -36,6 +43,7 @@
  */
 .world {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   --ground: var(--ground-default);
@@ -69,21 +77,24 @@
     var(--ground) var(--land-line)
   );
   margin-top: calc(-1 * var(--space-3));
+  /*
+   * A 16:9 scene of the screen's width if there is room. When the text needs
+   * the room, the land gives up its height long before the ground does.
+   */
+  flex: 0 1000 min(56.25vw, 62dvh);
+  min-height: var(--scene-floor);
 }
 
 .world[data-world="map"] {
   --ground: var(--ground-map);
 }
 
-/*
- * The scene. Always whole: on a phone it spans the screen, and on a wide
- * screen its width is capped so that all of it fits above the dialogue box,
- * with its sides fading into the night.
- */
+/* The scene. Always whole, and as wide as the screen. */
 .stage {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: 100%;
   animation: stage-in 0.9s var(--ease-soft) both;
   mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
 }
@@ -108,9 +119,14 @@
 
 .ground {
   position: relative;
-  flex: 1;
-  margin-top: -1px;
-  padding: 0 var(--gutter) var(--space-4);
+  z-index: 2;
+  flex: 1 1 auto;
+  /* Only when the screen is too short for the text does the ground scroll, inside itself. */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-top: calc(-1 * var(--space-1));
+  padding: 0 var(--gutter) max(var(--space-2), env(safe-area-inset-bottom));
   background: linear-gradient(to bottom, var(--ground), var(--color-night) 28rem);
 }
 
@@ -119,8 +135,8 @@
   position: relative;
   z-index: 2;
   max-width: var(--column);
-  margin: calc(-1 * var(--space-1)) auto 0;
-  padding: var(--space-3);
+  margin: 0 auto;
+  padding: var(--dialogue-pad);
   border: 2px solid var(--color-ember);
   border-radius: var(--radius);
   background: rgb(21 12 30 / 0.93);
@@ -138,7 +154,7 @@
 .beat {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--beat-gap);
   animation: beat-in var(--motion-beat) var(--ease-soft) both;
 }
 
@@ -169,6 +185,7 @@
   position: relative;
   z-index: 2;
   display: flex;
+  flex: none;
   flex-direction: column;
   gap: 0.25rem;
   width: 100%;
@@ -212,7 +229,8 @@
     linear-gradient(90deg, transparent, var(--color-ember) 25%, var(--color-ember) 75%, transparent) center / 100% 1px no-repeat;
 }
 
-.title:focus {
+.title:focus,
+.learned h2:focus {
   outline: none;
 }
 
@@ -220,6 +238,7 @@
 
 .titleScreen {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,14 +277,15 @@
 /* ---------- Scene ---------- */
 
 /*
- * As wide as the screen, and never taller than a 16:9 scene of that width. With
- * `slice` scaling this shows the whole scene on a phone, and the scene plus its
- * wings on a wide screen. The scene itself is never cropped.
+ * As wide and as tall as the land, which is never taller than a 16:9 scene of
+ * the screen's width. With `slice` scaling this shows the whole scene on a
+ * phone, and the scene plus its wings where the land is wider than 16:9. The
+ * scene itself is never cropped.
  */
 .scene {
   display: block;
   width: 100%;
-  height: min(56.25vw, 62dvh);
+  height: 100%;
 }
 
 /* One line about the road, on the travel beat. */
@@ -313,6 +333,7 @@
 
 .primary,
 .secondary,
+.quiet,
 .choice,
 .mute {
   min-height: var(--tap-min);
@@ -428,8 +449,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding-top: var(--space-3);
-  border-top: 1px dashed var(--color-plum-light);
 }
 
 .whisper label {
@@ -457,6 +476,28 @@
 .whisper textarea:hover,
 .whisper textarea:focus {
   border-color: var(--color-amber);
+}
+
+.whisperActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+}
+
+/* A way back, quieter than the buttons that move the story on. */
+.quiet {
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-mist);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.quiet:hover {
+  color: var(--color-parchment);
 }
 
 .small {
@@ -666,13 +707,88 @@
     --gutter: var(--space-3);
   }
 
-  .dialogue {
-    padding: var(--space-4);
+  .page {
+    --dialogue-pad: var(--space-3) var(--space-4);
   }
 
   .lantern {
     width: 1.75rem;
     height: 2.6rem;
+  }
+}
+
+/* A wide screen: the three paths sit side by side, so the box stays low and the scene tall. */
+@media (min-width: 64rem) {
+  .page {
+    --column: 62rem;
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .choice {
+    height: 100%;
+  }
+
+  .story,
+  .road {
+    max-width: none;
+  }
+}
+
+/* A short screen: everything tightens so the text still fits. The type stays 18px or more. */
+@media (max-height: 56rem) {
+  .page {
+    --dialogue-pad: var(--space-2);
+    --beat-gap: var(--space-2);
+    --scene-floor: 4.5rem;
+    --font-size-title: 1.75rem;
+    --font-size-lore: 1.25rem;
+  }
+
+  .bar {
+    padding-top: max(var(--space-1), env(safe-area-inset-top));
+  }
+
+  .heading {
+    padding-top: 0;
+  }
+
+  .title::after {
+    display: none;
+  }
+
+  .hero::after {
+    display: block;
+  }
+
+  .choices,
+  .story,
+  .recap {
+    gap: var(--space-1);
+  }
+
+  .choice {
+    padding: 0.5rem 0.8rem 0.5rem 0.9rem;
+    line-height: 1.35;
+  }
+
+  .story,
+  .reaction,
+  .lore,
+  .recap {
+    line-height: 1.45;
+  }
+
+  .learned {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .whisper textarea {
+    min-height: 4.5rem;
   }
 }
 

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Kingdom of Prod: a house in Hollowmere, one window lit, under the harvest moon. -->
+  <rect width="32" height="32" rx="6" fill="#2a1839"/>
+  <rect y="18" width="32" height="8" fill="#3c2350"/>
+  <path d="M0 26h32v0a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6z" fill="#150c1e" shape-rendering="auto"/>
+  <!-- moon and stars -->
+  <path d="M22 4h4v1h1v1h1v4h-1v1h-1v1h-4v-1h-1v-1h-1V6h1V5h1z" fill="#ffc76b"/>
+  <path d="M23 6h1v1h-1zM25 8h1v1h-1z" fill="#d99a3a"/>
+  <path d="M5 5h1v1H5zM11 3h1v1h-1zM3 12h1v1H3zM28 15h1v1h-1z" fill="#cfc2d9"/>
+  <!-- chimney and crooked roof -->
+  <path d="M20 10h3v6h-3z" fill="#0d0614"/>
+  <path d="M14 9h2v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1H5v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1z" fill="#0d0614"/>
+  <!-- walls -->
+  <path d="M7 19h16v9H7z" fill="#6b5a78"/>
+  <path d="M7 19h16v1H7z" fill="#4b3263"/>
+  <path d="M7 19h1v9H7zM22 19h1v9h-1z" fill="#0d0614"/>
+  <!-- lit window -->
+  <path d="M9 21h6v5H9z" fill="#0d0614"/>
+  <path d="M10 22h4v3h-4z" fill="#ffc76b"/>
+  <path d="M12 22h0v3" stroke="#a06a32" stroke-width="1" transform="translate(-.5 0)"/>
+  <!-- door -->
+  <path d="M17 22h4v6h-4z" fill="#0d0614"/>
+  <path d="M18 23h2v5h-2z" fill="#a06a32"/>
+  <!-- pumpkin by the door -->
+  <path d="M25 25h3v1h1v2h-1v1h-3v-1h-1v-2h1z" fill="#ec8a35"/>
+  <path d="M26 24h1v1h-1z" fill="#4f5a3a"/>
+</svg>

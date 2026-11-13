@@ -236,6 +236,13 @@ This section covers "the game fits the screen" in spec section 9.1.
 - **Ending.** `Ending` keeps a local `step` state: the story first, then the lessons. The engine does not change.
 - **iPhone and iPad.** The viewport uses `viewport-fit=cover`, and the bar and the ground pad by the safe-area insets. Playwright gets two WebKit projects, `iphone` and `ipad`, which run `tests/e2e/fit.spec.ts` only. That test plays a full game at each size and checks on every beat that the page cannot scroll and that every control and text block is inside the screen.
 
+## 8e. Icon and link preview
+
+- **Files, not code.** Next's file conventions serve them: `app/icon.svg` (tab icon), `app/apple-icon.png` (180px, home screen), `app/opengraph-image.png` and `app/twitter-image.png` (1200 by 630) with their `.alt.txt` files. Nothing is generated at request time.
+- **The icon** is drawn by hand as a pixel-style SVG in the palette of `tokens.css`.
+- **The preview image** is a screenshot of the real gate scene with the title set over the sky in the game's own fonts. `scripts/make-share-images.ts` makes it, and the home-screen icon, from a running copy of the game, so it can be made again when the art changes.
+- **Metadata.** `app/layout.tsx` sets `metadataBase` to the production address, and the Open Graph and Twitter card fields.
+
 ## 9. Testing
 
 | Layer | What it covers |

@@ -154,6 +154,8 @@ Added after Paula's second playtest (11 Nov 2026): "I want to be inside of the g
   - Result (12 Nov 2026): `tests/e2e/fit.spec.ts` runs on those seven sizes; the iPhone and iPad sizes run in WebKit. A phone held sideways is not in the list: there the dialogue box may scroll inside itself.
 - [ ] **T065** (Paula) Play it on a real iPhone and an iPad.
   - Depends on: T064.
+- [x] **T066** (Fable) Add the tab icon, the home-screen icon and the link preview image (plan.md, section 8e), with a test.
+  - Depends on: T063.
 
 ## M4: Release
 

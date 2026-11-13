@@ -29,10 +29,18 @@ const silkscreen = Silkscreen({
   variable: "--font-silkscreen",
 });
 
+const TITLE = "Kingdom of Prod";
+const DESCRIPTION =
+  "A 10-minute spooky autumn story game. Five strange problems, each a real product dilemma in disguise.";
+
+// The icon and the link preview image are files in this folder (icon.svg, apple-icon.png,
+// opengraph-image.png, twitter-image.png). Next adds their tags; see plan.md, section 8e.
 export const metadata: Metadata = {
-  title: "Kingdom of Prod",
-  description:
-    "A 10-minute spooky autumn story game. Five strange problems, each a real product dilemma in disguise.",
+  metadataBase: new URL("https://kingdom-of-prod.vercel.app"),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { type: "website", url: "/", siteName: TITLE, title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 // `cover` lets the world run under the notch; the bar and the ground pad by the safe-area insets.

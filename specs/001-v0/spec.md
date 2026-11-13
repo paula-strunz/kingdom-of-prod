@@ -140,6 +140,7 @@ The first playtest (Paula, 11 Nov 2026) found the look and the sound lovely but 
 - **The game fills the screen.** There is no framed picture and no card around the game. The scene is the world: its sky runs up behind the lanterns and the title, and its ground runs down to the bottom of the screen. Text and choices sit in a dialogue box on the ground, as in an old adventure or role-playing game. (Second playtest, Paula, 11 Nov 2026: "I want to be inside of the game.")
 - **The game fits the screen.** The player never scrolls the page. On every beat, the lanterns, the title, the scene, the text, and the buttons are all on screen at once. The scene gives up height first to make room for the text. This holds on a phone held upright (from 375 by 667), on a tablet both ways round, and on a laptop. On a wide screen the three choices sit side by side. Only if a screen is too short for the text, such as a phone held sideways, does the dialogue box scroll inside itself; the page still does not. (Fourth playtest, Paula, 12 Nov 2026: "I have to scroll, so not ideal.")
 - **The ending is two steps.** First what became of Hollowmere, then "What you learned" with the five lessons, so each step fits the screen.
+- **Icon and link preview.** The browser tab shows a small icon in the style of the game: a spooky village house with a lit window under the moon. When the link is shared, the preview shows the village gate scene with the keeper, the name of the game and one line about it. (Paula, 13 Nov 2026.)
 - No part of a scene is cropped at any screen size. On a wide screen the scene does not sit in the middle with empty sides: the place itself continues to both edges of the screen, with more sky, ground, trees, and houses, or more wall indoors. Only the dialogue box stays in the middle. (Third playtest, Paula, 11 Nov 2026.)
 - When the keeper arrives at a place, the scene slides in from the side the keeper walks toward, so it feels like walking into it.
 
@@ -216,6 +217,7 @@ The first playtest (Paula, 11 Nov 2026) found the look and the sound lovely but 
 20. The dialogue box, the lanterns, and the mute button stay readable over the scene: text contrast is still WCAG AA.
 21. The page never scrolls. On a phone held upright (375 by 667 and larger), an iPad both ways round, and a laptop, every beat of a full game shows all of its text and buttons without scrolling anything.
 22. The game plays to the end in Safari's engine on an iPhone and an iPad profile, as well as in Chrome.
+23. The page declares a tab icon, a home-screen icon, and a 1200 by 630 preview image with a title, a description and alt text, and all three files load.
 
 ## 12. Success measures (from the PRD)
 
